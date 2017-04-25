@@ -66,7 +66,7 @@ signal sqrt_output: unsigned(11 downto 0):=(others => '0'); -- Holder for the ou
 signal place_holder_vector: std_logic_vector(11 downto 0); --Changing the sqrt_output into a std_logic_vector
 
 
-signal twelve_out: std_logic_vector (11 downto 0);
+
 
 
 
@@ -104,11 +104,11 @@ begin
 
 	leftshifted_unsigned(15 downto 0) <= unsigned_inside_sqrt(31 downto 16); -- Putting the leftshifted binary value inside leftshifted_unsigned for the sqrt function
 	
-	sqrt_output <= sqrt_real(leftshifted_unsigned);
+	sqrt_output <= sqrt_real(unsigned_inside_sqrt);
 	
-	twelve <= sqrt_output(11 downto 0);
 
-	place_holder_vector <= std_logic_vector(twelve); -- Changing the integer into 12 bit std_logic_vector
+
+	place_holder_vector <= std_logic_vector(sqrt_output); -- Changing the integer into 12 bit std_logic_vector
 	
 
 
