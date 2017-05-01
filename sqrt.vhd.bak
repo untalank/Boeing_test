@@ -2,7 +2,7 @@
 library ieee; 
 use ieee.std_logic_1164.all; 
 use IEEE.STD_LOGIC_unsigned.ALL;
---use work.my_sqrt.all;
+use work.my_sqrt.all;
 
 entity squart is port( 
 	clock      : in std_logic;  
