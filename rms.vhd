@@ -56,17 +56,17 @@ signal power: integer := 0; -- Variable that holds the squared voltage or curren
 signal counter: integer:=0; -- Used to trigger the next process to finish the rest of the calculations 
 
 signal unsigned_inside_sqrt: unsigned(31 downto 0):=(others => '0'); -- Used to change the integer inside the sqrt to an unsigned 32 bit
-signal leftshifted_unsigned: unsigned(31 downto 0); --Putting the left shifted unsigned(32 bit) here
+signal leftshifted_unsigned: unsigned(31 downto 0):=(others => '0'); --Putting the left shifted unsigned(32 bit) here
 
 
 signal sqrt_output: unsigned(31 downto 0):=(others => '0'); -- Holder for the output of sqrt function 
 
 
 
-signal place_holder_vector: std_logic_vector(11 downto 0); --Changing the sqrt_output into a std_logic_vector
+signal place_holder_vector: std_logic_vector(11 downto 0):=(others => '0'); --Changing the sqrt_output into a std_logic_vector
 
 
-signal twelve_out: unsigned (11 downto 0);
+signal twelve_out: unsigned (11 downto 0):=(others => '0');
 
 
 
