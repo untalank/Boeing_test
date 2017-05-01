@@ -59,7 +59,7 @@ signal unsigned_inside_sqrt: unsigned(31 downto 0):=(others => '0'); -- Used to 
 signal leftshifted_unsigned: unsigned(31 downto 0):=(others => '0'); --Putting the left shifted unsigned(32 bit) here
 
 
-signal sqrt_output: unsigned(31 downto 0):=(others => '0'); -- Holder for the output of sqrt function 
+signal sqrt_output: unsigned(15 downto 0):=(others => '0'); -- Holder for the output of sqrt function 
 
 
 
