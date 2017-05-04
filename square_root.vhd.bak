@@ -70,6 +70,7 @@ begin
 	
 		if(data_in/= zero) then
 		leftshifted_unsigned(24 downto 0)<= ( data_in(40 downto 16));
+
 		
 		end if;
 
