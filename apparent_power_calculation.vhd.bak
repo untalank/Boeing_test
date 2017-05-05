@@ -30,7 +30,7 @@ begin
 
 	I_times_V <= in_Vrms*in_Irms; -- Irms*Vrms, because we're turning the bit vectors into integers, we do not need to left shift it 16 bit to make sure 
 					-- the output is a 16 bit value
-	apparent_power <= I_times_V(23 downto 12);
+	apparent_power <= I_times_V(11 downto 0);
 
 
 --apparent_power <= std_logic_vector(to_unsigned(I_times_V, apparent_power'length)); -- Turning the integer into a 16 bit binary value 

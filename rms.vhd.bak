@@ -1,10 +1,9 @@
 
-
 library ieee;
 use ieee.std_logic_1164.all;
---use ieee.numeric_std.all;
+use ieee.numeric_std.all;
 use IEEE.STD_LOGIC_unsigned.ALL;
-use IEEE.std_logic_arith.all;
+--use IEEE.std_logic_arith.all;
 entity rms_calc is 
 
 port( 
@@ -26,10 +25,12 @@ data_out   : out unsigned(11 downto 0));
 end component;
 
 
-signal input_sample: unsigned(11 downto 0):= (others => '0'); -- Signal that holds the bit vector that was transformed into an integer
+--signal input_sample: unsigned(11 downto 0):= (others => '0'); -- Signal that holds the bit vector that was transformed into an integer
+
 signal inside_sqrt:  unsigned(40 downto 0):=(others => '0');
 
-signal power: unsigned(23 downto 0):= (others => '0'); -- Variable that holds the squared voltage or current data sample 
+signal power: unsigned(23 downto 0):=
+ (others => '0'); -- Variable that holds the squared voltage or current data sample 
 
 signal counter: integer:=0; -- Used to trigger the next process to finish the rest of the calculations 
 
@@ -67,7 +68,7 @@ begin
 		
 		when (5050) =>
 		counter <= 0;
-		summation <= summation + power; -- first input  
+		summation <= summation + power; -- smmation is 0 + new power, first input  
 		inside_sqrt <= summation_5050 * multiply; -- Multiplying the total summation with 13 
 
 		when others => -- If statement that repeats until the number of samples is reached 
@@ -79,7 +80,7 @@ begin
 		inside_sqrt <= zero;
 		end case;
 
-	
+
 	end if; 
 	end process; 
 end architecture behavioral;

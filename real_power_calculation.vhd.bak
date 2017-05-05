@@ -20,7 +20,7 @@ architecture behavioral of real_power_calc is
 	--signal n_counter: integer:=0;
 	--signal multiplier_sum: integer:= 0;
 	--constant data_sample_number: integer:=5051;
-	constant one: integer:= 1;
+	--constant one: integer:= 1;
 	--constant two: integer:=2;
 	--constant ten: integer:=10;
 

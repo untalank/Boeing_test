@@ -1,6 +1,7 @@
 library ieee;
 use ieee.std_logic_1164.all; 
-use ieee.numeric_std.all;
+--use ieee.numeric_std.all;
+use IEEE.std_logic_arith.all;
 use IEEE.std_logic_unsigned.all;
 --use IEEE.STD_LOGIC_unsigned.ALL;
 
@@ -70,7 +71,6 @@ begin
 	
 		if(data_in/= zero) then
 		leftshifted_unsigned(24 downto 0)<= ( data_in(40 downto 16));
-
 		
 		end if;
 
@@ -105,9 +105,6 @@ begin
 
 
 end architecture;
-
-
-
 
 
 
