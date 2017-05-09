@@ -9,7 +9,7 @@ entity rms_calc is
 port( 
 	input_flag : in std_logic; -- Used to trigger the first process 
 	input_data: in unsigned (11 downto 0); -- 13 bit value input, either voltage or current -Change these to 12 bits 
-	rms_amplitude: out unsigned(11 downto 0):= (others => '0') -- 16 bit voltage or current RMS output --Change these to 12 bits 
+	rms_amplitude: out unsigned(11 downto 0):= (others => '0') -- 12 bit voltage or current RMS output -- in (mili Volts or miliAmps)
 	);
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -20,33 +20,33 @@ architecture behavioral of rms_calc is
 
 component squart is port(  
 clock      : in std_logic;
-data_in    : in unsigned(40 downto 0); 
-data_out   : out unsigned(11 downto 0)); 
+data_in    : in unsigned(44 downto 0); 
+data_out   : out unsigned(11 downto 0)); --must be right shifted four to a sixteen bit
 end component;
 
 
 --signal input_sample: unsigned(11 downto 0):= (others => '0'); -- Signal that holds the bit vector that was transformed into an integer
 
-signal inside_sqrt:  unsigned(40 downto 0):=(others => '0');
+signal inside_sqrt:  unsigned(44 downto 0):=(others => '0');
 
 signal power: unsigned(23 downto 0):=
  (others => '0'); -- Variable that holds the squared voltage or current data sample 
 
 signal counter: integer:=0; -- Used to trigger the next process to finish the rest of the calculations 
 
-signal summation: unsigned(36 downto 0):=(others => '0'); -- Variable that holds the summed squared voltage and current data sample  
+signal summation: unsigned(32 downto 0):=(others => '0'); -- Variable that holds the summed squared voltage and current data sample  
 
-signal summation_5050: unsigned(36 downto 0):=(others => '0');
+signal summation_334: unsigned(32 downto 0):=(others => '0');
 
-signal multiply: unsigned(3 downto 0):= "1101"; ---- 1/5050 (1/number of smaples)in binary that was Rigth shift 16 bits 
+signal multiply: unsigned(11 downto 0):= "110001000011"; ---- 1/334 (1/number of smaples)in binary that was Rigth shift 20 bits 
 
-signal zero:unsigned(40 downto 0):=(others => '0');
+signal zero:unsigned(44 downto 0):=(others => '0');
 
 
 
 --constant number_of_samples: integer := 5050;
 constant one: integer:= 1;
---constant two: integer:=2;
+
 
 begin 
 	--input_sample <= (unsigned(input_data)); -- Turning the input data into an integer
@@ -61,15 +61,15 @@ begin
 		
 		case counter is
 				
-		when (5049) =>	
-		summation_5050 <= summation ;
-		summation <= zero(36 downto 0);
+		when (333) =>	
+		summation_334 <= summation ;
+		summation <= zero(32 downto 0);
 		counter <= counter + 1;
 		
-		when (5050) =>
+		when (334) =>
 		counter <= 0;
 		summation <= summation + power; -- smmation is 0 + new power, first input  
-		inside_sqrt <= summation_5050 * multiply; -- Multiplying the total summation with 13 
+		inside_sqrt <= summation_334 * multiply; -- Multiplying the total summation with 13 
 
 		when others => -- If statement that repeats until the number of samples is reached 
 		

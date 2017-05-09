@@ -2,7 +2,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
-use IEEE.STD_LOGIC_unsigned.ALL;
+--use IEEE.STD_LOGIC_unsigned.ALL;
 --use IEEE.std_logic_arith.all;
 entity rms_calc is 
 
@@ -20,33 +20,33 @@ architecture behavioral of rms_calc is
 
 component squart is port(  
 clock      : in std_logic;
-data_in    : in unsigned(40 downto 0); 
-data_out   : out unsigned(11 downto 0)); 
+data_in    : in unsigned(44 downto 0); 
+data_out   : out unsigned(11 downto 0)); --must be right shifted four to a sixteen bit
 end component;
 
 
 --signal input_sample: unsigned(11 downto 0):= (others => '0'); -- Signal that holds the bit vector that was transformed into an integer
 
-signal inside_sqrt:  unsigned(40 downto 0):=(others => '0');
+signal inside_sqrt:  unsigned(44 downto 0):=(others => '0');
 
 signal power: unsigned(23 downto 0):=
  (others => '0'); -- Variable that holds the squared voltage or current data sample 
 
 signal counter: integer:=0; -- Used to trigger the next process to finish the rest of the calculations 
 
-signal summation: unsigned(36 downto 0):=(others => '0'); -- Variable that holds the summed squared voltage and current data sample  
+signal summation: unsigned(32 downto 0):=(others => '0'); -- Variable that holds the summed squared voltage and current data sample  
 
-signal summation_5050: unsigned(36 downto 0):=(others => '0');
+signal summation_334: unsigned(32 downto 0):=(others => '0');
 
-signal multiply: unsigned(3 downto 0):= "1101"; ---- 1/5050 (1/number of smaples)in binary that was Rigth shift 16 bits 
+signal multiply: unsigned(11 downto 0):= "110001000011"; ---- 1/334 (1/number of smaples)in binary that was Rigth shift 20 bits 
 
-signal zero:unsigned(40 downto 0):=(others => '0');
+signal zero:unsigned(44 downto 0):=(others => '0');
 
 
 
 --constant number_of_samples: integer := 5050;
 constant one: integer:= 1;
---constant two: integer:=2;
+
 
 begin 
 	--input_sample <= (unsigned(input_data)); -- Turning the input data into an integer
@@ -61,15 +61,15 @@ begin
 		
 		case counter is
 				
-		when (5049) =>	
-		summation_5050 <= summation ;
-		summation <= zero(36 downto 0);
+		when (333) =>	
+		summation_334 <= summation ;
+		summation <= zero(32 downto 0);
 		counter <= counter + 1;
 		
-		when (5050) =>
+		when (334) =>
 		counter <= 0;
 		summation <= summation + power; -- smmation is 0 + new power, first input  
-		inside_sqrt <= summation_5050 * multiply; -- Multiplying the total summation with 13 
+		inside_sqrt <= summation_334 * multiply; -- Multiplying the total summation with 13 
 
 		when others => -- If statement that repeats until the number of samples is reached 
 		

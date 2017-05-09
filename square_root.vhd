@@ -7,7 +7,7 @@ use ieee.numeric_std.all;
 
 entity squart is port( 
 clock      : in std_logic;  
-data_in    : in unsigned(40 downto 0):=(others => '0'); 
+data_in    : in unsigned(44 downto 0):=(others => '0'); 
 data_out   : out unsigned(11 downto 0):=(others => '0')
 	);
 
@@ -52,13 +52,13 @@ architecture sqrt of  squart is
 
 --end package body;
 	--signal holder: unsigned(31 downto 0):=(others => '0');
-	signal holder_out: unsigned(15 downto 0):=(others => '0');
+	--signal holder_out: unsigned(15 downto 0):=(others => '0');
 	--signal twelve:unsigned(11 downto 0):=(others => '0');
 	--signal unsigned_to_vector: std_logic_vector(11 downto 0);
  
 	signal leftshifted_unsigned: unsigned(31 downto 0):=(others => '0'); --Putting the left shifted unsigned(32 bit) here
 	--signal inside_sqrt:  unsigned(40 downto 0):=(others => '0');
-	signal zero:unsigned(40 downto 0):=(others => '0');
+	signal zero:unsigned(44 downto 0):=(others => '0');
 	signal sqrt_output: unsigned(15 downto 0):=(others => '0'); -- Holder for the output of sqrt function 
 
 	signal count: integer:=0;
@@ -70,7 +70,7 @@ begin
 	if rising_edge(clock) then
 	
 		if(data_in/= zero) then
-		leftshifted_unsigned(24 downto 0)<= ( data_in(40 downto 16));
+		leftshifted_unsigned(24 downto 0) <= ( data_in(44 downto 20));
 		
 		end if;
 
@@ -83,10 +83,10 @@ begin
 		if (sqrt_output /= zero( 15 downto 0)) then 
 		
 		data_out <= sqrt_output(11 downto 0); -- Changing the integer into 12 bit 
-		count <= count +1;
-			if (count /= 0) then
-			count <= count +1;
-			end if;
+		--count <= count +1;
+			--if (count /= 0) then
+			--count <= count +1;
+			--end if;
 		sqrt_output <= zero(15 downto 0);
 --sqrt_output <= sqrt_real(leftshifted_unsigned);
 		end if;

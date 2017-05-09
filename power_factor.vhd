@@ -7,9 +7,9 @@ entity power_factor_calc is
 
 port( 
 	input_flag: in std_logic;	
-	in_real_power: in std_logic_vector (15 downto 0);
-	in_apparent_power: in std_logic_vector (15 downto 0);	
-	power_factor: out std_logic_vector(15 downto 0)
+	in_real_power: in unsigned (11 downto 0):=(others => '0') ;
+	in_apparent_power: in unsigned (11 downto 0):=(others => '0');	
+	power_factor: out unsigned(11 downto 0):=(others => '0')
 	);
 
 ---------------------------------------------------------------------------------------------------------
@@ -45,21 +45,21 @@ architecture behavioral of power_factor_calc is
 
 --Create a signal that identifies if inductive or capacitive
 
-signal real_power_int : integer:= 0;
-signal  apparent_power_int: integer := 0;
-signal LC: integer:= 0; -- changes if inductive or capacitive 
-signal multiply: integer :=0;
+--signal real_power_int : integer:= 0;
+--signal  apparent_power_int: integer := 0;
+--signal LC: integer:= 0; -- changes if inductive or capacitive 
+--signal multiply: integer :=0;
 -- signal conatant_num: integer:= 32768; -- 2^16
-signal lead_or_lag: integer:= 0;
-signal vector: std_logic_vector(15 downto 0):=(others => '0');
+--signal lead_or_lag: integer:= 0;
+--signal vector: std_logic_vector(15 downto 0):=(others => '0');
 
+signal zero:unsigned(11 downto 0):=(others => '0');
 
-
-signal real_power_uns: unsigned(15 downto 0) :=(others => '0');
-signal apparent_power_uns: unsigned(15 downto 0) :=(others => '0');
-signal a : unsigned(15 downto 0) :=(others => '0');
-signal b : unsigned(15 downto 0) :=(others => '0');
-signal c : unsigned(15 downto 0) :=(others => '0');
+--signal real_power_uns: unsigned(15 downto 0) :=(others => '0');
+--signal apparent_power_uns: unsigned(15 downto 0) :=(others => '0');
+--signal a : unsigned(15 downto 0) :=(others => '0');
+--signal b : unsigned(15 downto 0) :=(others => '0');
+--signal c : unsigned(15 downto 0) :=(others => '0');
 
 
 begin
@@ -68,26 +68,30 @@ begin
 	--apparent_power_int <= to_integer(signed(in_apparent_power)); -- Turning the input data into an integer
 
 
-	real_power_uns <= unsigned(in_real_power);
-	apparent_power_uns <= unsigned(in_apparent_power);
+	--real_power_uns <= unsigned(in_real_power);
+	--apparent_power_uns <= unsigned(in_apparent_power);
 	
-	a <= real_power_uns;
-	b <= apparent_power_uns;
+	--a <= real_power_uns;
+	--b <= apparent_power_uns;
 
 
 
-	process(input_flag)
+	--process(input_flag)
+	process(in_real_power,in_apparent_power)
 	begin 
-  	if rising_edge(input_flag) then
-	c <= divide ( a , b ); -- Calling function 
-
-
+  	--if rising_edge(input_flag) then
+	if ( in_apparent_power /= zero) then 
+		if (in_real_power /= zero) then 
+			power_factor <= divide ( in_real_power , in_apparent_power ); -- Calling function 
+		else 
+			power_factor <= zero;
+		end if;
+	else
+	power_factor <= zero;
 
 	--multiply <= real_power_int / apparent_power_int; -- 2^16 is used to right shift for binary math, however, because 
 							--  in_real_power and in_apparent_power is turned into integer, we dont have to shift it 
-	
-
-	vector <= std_logic_vector((c));
+	--vector <= std_logic_vector((c));
 	end if;
 	
 
@@ -98,7 +102,7 @@ begin
 	--else 
 	--vector(15) <='0'; 
 	--end if;
-	power_factor <= vector;
+	--power_factor <= vector;
 	end process;
 end architecture behavioral;
 

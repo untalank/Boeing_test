@@ -4,14 +4,14 @@ use ieee.numeric_std.all;
 entity real_power_component is 
 port( 
 	input_flag: in std_logic; --Using as process trigger 
-	data_in    : in unsigned(40 downto 0):=(others => '0'); 
+	data_in    : in unsigned(44 downto 0):=(others => '0'); 
 	data_out   : out unsigned(11 downto 0):=(others => '0')
 	);
 end entity;
 
 architecture behavioral of real_power_component is 
 	signal leftshifted_unsigned: unsigned(31 downto 0):=(others => '0'); --Putting the left shifted unsigned(32 bit) here
-	signal zero:unsigned(40 downto 0):=(others => '0');
+	signal zero:unsigned(44 downto 0):=(others => '0');
 
 begin
 process(input_flag)
@@ -19,12 +19,12 @@ process(input_flag)
 	if rising_edge(input_flag) then
 	
 		if(data_in/= zero) then
-		leftshifted_unsigned(24 downto 0)<= ( data_in(40 downto 16));
+		leftshifted_unsigned(24 downto 0)<= ( data_in(44 downto 20));
 		
 		end if;
 
 		if (leftshifted_unsigned/= zero(31 downto 0)) then
-		data_out <= leftshifted_unsigned(11 downto 0);
+		data_out <= leftshifted_unsigned(24 downto 13);
 		leftshifted_unsigned <= zero(31 downto 0);
 		end if; 
 
