@@ -55,7 +55,7 @@ signal zero:unsigned(11 downto 0):=(others => '0');
 				quotient <= divide ( numerator , denaminator );  --function is "called" here.
 			else 
 				quotient <= zero;
-			enf if;
+			end if;
 		else 
 		quotient <= zero;
 	  	end if;

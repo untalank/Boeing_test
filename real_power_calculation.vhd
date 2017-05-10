@@ -10,47 +10,30 @@ port(
 	);
 end entity;
 architecture behavioral of real_power_calc is 
-	--signal voltage: integer:= 0; -- Signals used to hold the voltage input that was changed 
-	--signal current: integer:= 0;
-	--signal multiplier_1: integer:= 0; -- 
-	--signal power: integer:= 0; -- 
-	--signal div: integer:= 0; --
-	--signal mult_2: integer:= 0;
-	--signal mult_const_power:integer:= 0;
-	--signal n_counter: integer:=0;
-	--signal multiplier_sum: integer:= 0;
-	--constant data_sample_number: integer:=5051;
+
 	constant one: integer:= 1;
-	--constant two: integer:=2;
-	--constant ten: integer:=10;
 
 	signal counter: integer:=0;
 	signal power: unsigned(23 downto 0):= (others => '0');
 	signal zero:unsigned(44 downto 0):=(others => '0');
 	signal summation: unsigned(32 downto 0):=(others => '0');
 	signal summation_334: unsigned(32 downto 0):=(others => '0');
-
 	signal multiply: unsigned(11 downto 0):= "110001000011"; ---- 1/5050 (1/number of smaples)in binary that was Rigth shift 20 bits 
-
 	signal inside_sqrt:  unsigned(44 downto 0):=(others => '0');
-
+	
 	component real_power_component is 
 	port( 
-		input_flag: in std_logic; --Using as process trigger 
+		input_flag: in std_logic; 
 		data_in    : in unsigned(44 downto 0):=(others => '0'); 
 		data_out   : out unsigned(11 downto 0):=(others => '0')
 		);
-end component;
-
+	end component;
 
 
 begin 
-	--voltage <= to_integer(signed(Voltage_in)); --Turning the bit vectors into integers 
-	--current <= to_integer(signed(Current_in));
-	--power <= two ** ten; --2^10 this multiplier scaling factor to make it 16 bit	
 
-
-	component_real_power: real_power_component port map (input_flag,inside_sqrt,Real_power);
+	component_real_power: real_power_component port map (input_flag,inside_sqrt,Real_power); --The RMS Values lag 3 cycles before it outputs the value 
+												-- One is sending as zero, because the output lags 1 number to the real one 
 	
 	process(input_flag) -- Using a process so it will go down the line instead of running cuncurently 
 	begin
@@ -63,41 +46,18 @@ begin
 		summation <= zero(32 downto 0);
 		counter <= counter + 1;
 		
-		when (334) =>
+		when (334) => -- might be missing 334 data. look at waveform 
 		counter <= 0;
 		summation <= summation + power; -- first input  
 		inside_sqrt <= summation_334 * multiply; -- Multiplying the total summation with 13 
 
 		when others => -- If statement that repeats until the number of samples is reached 
-		
-		--power <= input_sample*input_sample; --Squaring the input sample 
 		power <= Voltage_in*Current_in;
 		summation <= summation + power; -- Running summation of the squared input voltage 
 		counter <= counter + one; -- Counter that triggers the next process 
 		inside_sqrt <= zero; --restting inside_sqrt when it leaves 5050 case
 		end case;
-
-
-
-
-
-
 	
---		if (n_counter < data_sample_number) then 	
---			multiplier_sum <= voltage * current;
---			n_counter <= n_counter + 1; -- Counter that trigegrs the next process 
---		end if ;
---	end if;
---	end process;
---	process(n_counter) -- Process that triggers after the summation is complete 
---	begin
---	if(n_counter = 5050) then	
---	multiplier_1 <= data_sample_number*power; -- N * 2^10 
---	div <= one / multiplier_1; -- 1 / (N*2^10)  
---	mult_2 <= voltage * current; -- Getting the power for the specific data input  Vi * Ii
---	mult_const_power <= mult_2 * div;
---	Real_power <= std_logic_vector(to_signed(mult_const_power, Real_power'length)); --Turning the integer into a 16 bit binary value
---	
 	end if;
 	end process;
 end architecture behavioral; 

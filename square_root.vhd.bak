@@ -15,12 +15,6 @@ end entity squart;
 
 architecture sqrt of  squart is 
 
---package my_sqrt is 
---	function  sqrt_real  ( d : unsigned ) return unsigned;
---end my_sqrt;
-
---package body my_sqrt is
-
 	function  sqrt_real  ( d : unsigned ) return unsigned is
 	variable a : unsigned(31 downto 0):=d;  --original input.
 	variable q : unsigned(15 downto 0):=(others => '0');  --result.
@@ -48,30 +42,18 @@ architecture sqrt of  squart is
 
 	end function sqrt_real;
 
-
-
---end package body;
-	--signal holder: unsigned(31 downto 0):=(others => '0');
-	--signal holder_out: unsigned(15 downto 0):=(others => '0');
-	--signal twelve:unsigned(11 downto 0):=(others => '0');
-	--signal unsigned_to_vector: std_logic_vector(11 downto 0);
  
 	signal leftshifted_unsigned: unsigned(31 downto 0):=(others => '0'); --Putting the left shifted unsigned(32 bit) here
-	--signal inside_sqrt:  unsigned(40 downto 0):=(others => '0');
 	signal zero:unsigned(44 downto 0):=(others => '0');
 	signal sqrt_output: unsigned(15 downto 0):=(others => '0'); -- Holder for the output of sqrt function 
-
 	signal count: integer:=0;
 begin
-
-	--leftshifted_unsigned <= (zero(31 downto 1) & '1');
 	process(clock)
 	begin 
 	if rising_edge(clock) then
 	
 		if(data_in/= zero) then
-		leftshifted_unsigned(24 downto 0) <= ( data_in(44 downto 20));
-		
+		leftshifted_unsigned(24 downto 0) <= ( data_in(44 downto 20));	
 		end if;
 
 		if (leftshifted_unsigned/= zero(31 downto 0)) then
@@ -81,64 +63,20 @@ begin
 		end if; 
 
 		if (sqrt_output /= zero( 15 downto 0)) then 
-		
-		data_out <= sqrt_output(15 downto 4); -- Changing the integer into 12 bit 
-		--count <= count +1;
-			--if (count /= 0) then
-			--count <= count +1;
-			--end if;
+		data_out <= sqrt_output(11 downto 0); -- Changing the integer into 12 bit 
 		sqrt_output <= zero(15 downto 0);
---sqrt_output <= sqrt_real(leftshifted_unsigned);
 		end if;
+		
 		else 
 		null;
-			
 
-
-	--data_out <= sqrt_real(data_in(31 downto 0));
-	--if(sqrt_output /=zero(15 downto 0)) then
-	--data_out <= sqrt_output(11 downto 0);
 	end if;
-	--end if;
+
 	
 	end process;
 
 
 end architecture;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-	--holder(11 downto 0) <= data_in;
-	
-
-
-	--holder_out <= sqrt_real(data_in);
-	--twelve <= holder_out(11 downto 0);
-	--unsigned_to_vector <= std_logic_vector((twelve));
-	--data_out <= unsigned_to_vector;
-	--data_out <=holder_out(11 downto 0);
-
-	--signal a : unsigned(31 downto 0) :="00000000000000000000000000110010";   --50
-	--signal b : unsigned(15 downto 0) :=(others => '0');
-	
---	begin
-
---	b <= sqrt_real ( a );  --function is "called" here.
-
-
-
-
---end architecture sqrt; 
 
 
