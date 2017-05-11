@@ -33,6 +33,5 @@ process(input_flag)
 
 	end if;
 	
-	
 	end process;
 end architecture;
