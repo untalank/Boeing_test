@@ -32,7 +32,8 @@ architecture behavioral of real_power_calc is
 
 begin 
 
-	component_real_power: real_power_component port map (input_flag,inside_sqrt,Real_power);
+	component_real_power: real_power_component port map (input_flag,inside_sqrt,Real_power); --The RMS Values lag 3 cycles before it outputs the value 
+												-- One is sending as zero, because the output lags 1 number to the real one 
 	
 	process(input_flag) -- Using a process so it will go down the line instead of running cuncurently 
 	begin

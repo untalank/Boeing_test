@@ -14,12 +14,13 @@ architecture behavioral of real_power_component is
 	signal zero:unsigned(44 downto 0):=(others => '0');
 
 begin
-process(data_in,leftshifted_unsigned)
+process(input_flag)
 	begin 
 	if rising_edge(input_flag) then
 	
 		if(data_in/= zero) then
 		leftshifted_unsigned(24 downto 0)<= ( data_in(44 downto 20));
+		
 		end if;
 
 		if (leftshifted_unsigned/= zero(31 downto 0)) then
@@ -27,6 +28,8 @@ process(data_in,leftshifted_unsigned)
 		leftshifted_unsigned <= zero(31 downto 0);
 		end if; 
 
+		else 
+		null;
 
 	end if;
 	

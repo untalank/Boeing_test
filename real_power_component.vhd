@@ -19,7 +19,7 @@ process(input_flag)
 	if rising_edge(input_flag) then
 	
 		if(data_in/= zero) then
-		leftshifted_unsigned(24 downto 0)<= ( data_in(44 downto 20));
+		leftshifted_unsigned(24 downto 0)<= ( data_in(44 downto 20)); --When values too small, we can find output it 
 		
 		end if;
 
