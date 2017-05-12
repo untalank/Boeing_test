@@ -39,14 +39,16 @@ begin
 
 		case counter is
 				
-		when (333) =>	
-		summation_334 <= summation ;
+		when (333) =>
+		power <= Voltage_in*Current_in;	
+		summation_334 <= summation + power;  --should be summation + power;
 		summation <= zero(32 downto 0);
 		counter <= counter + 1;
 		
-		when (334) => -- might be missing 334 data. look at waveform 
-		counter <= 0;
-		summation <= summation + power; -- first input  
+		when (334) => -- might be missing 334 data. look at waveform
+		power <= Voltage_in*Current_in; 
+		counter <= 1;
+		summation <= summation+power; -- first input summation is 0
 		inside_sqrt <= summation_334 * multiply; -- Multiplying the total summation with 13 
 
 		when others => -- If statement that repeats until the number of samples is reached 

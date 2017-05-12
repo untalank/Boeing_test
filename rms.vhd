@@ -8,8 +8,9 @@ entity rms_calc is
 
 port( 
 	input_flag : in std_logic; -- Used to trigger the first process 
-	input_data: in unsigned (11 downto 0); -- 13 bit value input, either voltage or current -Change these to 12 bits 
-	rms_amplitude: out unsigned(11 downto 0):= (others => '0') -- 12 bit voltage or current RMS output -- in (mili Volts or miliAmps)
+	input_data: in unsigned (11 downto 0); -- 12 bit value input, either voltage or current -Change these to 12 bits 
+	rms_amplitude: out unsigned(11 downto 0):= (others => '0'); -- 12 bit voltage or current RMS output -- in (mili Volts or miliAmps)
+	output_flag: out std_logic:= '0'
 	);
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -19,9 +20,10 @@ architecture behavioral of rms_calc is
 
 
 component squart is port(  
-clock      : in std_logic;
+flag      : in std_logic;
 data_in    : in unsigned(44 downto 0); 
-data_out   : out unsigned(11 downto 0)); --must be right shifted four to a sixteen bit
+data_out   : out unsigned(11 downto 0); --must be right shifted four to a sixteen bit
+output_flag_component: out std_logic:= '0');
 end component;
 
 
@@ -45,32 +47,37 @@ constant one: integer:= 1; -- Constant for counter
 
 begin 
 
-	sqrt_call: squart port map(input_flag,inside_sqrt,rms_amplitude);
+	sqrt_call: squart port map(input_flag,inside_sqrt,rms_amplitude,output_flag);
 	process(input_flag) --Process that triggers every time there is a data input. 
 	begin
-	if rising_edge(input_flag) then
+	if (input_flag'event and input_flag = '1') then
 		
 		case counter is
 				
-		when (333) =>	
+		when (333) =>
+		power <= input_data*input_data;	
 		summation_334 <= summation ; -- Summation will be passed before being zeored out 
 		summation <= zero(32 downto 0);
 		counter <= counter + 1;
 		
 		when (334) =>
-		counter <= 0;
-		summation <= summation + power; -- smmation is 0 + new power, first input  
+		power <= input_data*input_data;
+		counter <= 1;
+		summation <= summation+power; -- first input summation is 0 
 		inside_sqrt <= summation_334 * multiply; -- Multiplying the total summation with 13 
+
 
 		when others => -- Case statement that repeats until the 333  is reached 
 		power <= input_data*input_data;
 		summation <= summation + power; -- Running summation of the squared input voltage 
 		counter <= counter + one; -- Counter that triggers the next process 
 		inside_sqrt <= zero;
+
 		end case;
 
 	end if; 
 	end process; 
+	
 end architecture behavioral;
 
 

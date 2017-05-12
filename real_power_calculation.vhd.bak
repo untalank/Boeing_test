@@ -6,7 +6,7 @@ port(
 	input_flag: in std_logic; --Using as process trigger 
 	Voltage_in: in unsigned(11 downto 0); -- Voltage input coming from ADC IP
 	Current_in: in unsigned(11 downto 0); -- Current input coming from ADC IP 
-	Real_power:  out unsigned(11 downto 0) -- Real power coming out of the function NEED TO BE ADJUSTED 13 BITS RIGHT TO GET RIGHT VALUE (ADD 12 ZEROS AFTER THE VALUE) (In uW) 
+	Real_power:  out unsigned(11 downto 0) -- Real power coming out of the function NEED TO BE ADJUSTED 13 BITS RIGHT TO GET RIGHT VALUE (ADD 13 ZEROS AFTER THE VALUE) (In uW) 
 	);
 end entity;
 architecture behavioral of real_power_calc is 
@@ -29,11 +29,9 @@ architecture behavioral of real_power_calc is
 		);
 	end component;
 
-
 begin 
 
-	component_real_power: real_power_component port map (input_flag,inside_sqrt,Real_power); --The RMS Values lag 3 cycles before it outputs the value 
-												-- One is sending as zero, because the output lags 1 number to the real one 
+	component_real_power: real_power_component port map (input_flag,inside_sqrt,Real_power); --The RMS Values lag 3 cycles before it outputs the value 												-- One is sending as zero, because the output lags 1 number to the real one 
 	
 	process(input_flag) -- Using a process so it will go down the line instead of running cuncurently 
 	begin

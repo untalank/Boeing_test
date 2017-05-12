@@ -7,7 +7,7 @@ port(
 	input_flag: in std_logic;	-- Used to trigger the first process 
 	in_Vrms: in unsigned (11 downto 0); 
 	in_Irms: in unsigned (11 downto 0); 
-	apparent_power: out unsigned (11 downto 0) -- HAVE TO ADD 
+	apparent_power: out unsigned (11 downto 0) -- HAVE TO ADD 12 zeros 
 );
 end entity apperent_power_calc;
  
