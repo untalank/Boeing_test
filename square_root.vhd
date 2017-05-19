@@ -15,7 +15,9 @@ output_flag_component: out std_logic := '0'
 end entity squart;
 
 architecture sqrt of  squart is 
-
+------------------------------------------------------------------------------------------------------------
+------Function that does the square root. Takes in a 32 bit unsigned, and outputs a 15 bit unsigned.--------
+------------------------------------------------------------------------------------------------------------
 	function  sqrt_real  ( d : unsigned ) return unsigned is
 	variable a : unsigned(31 downto 0):=d;  --original input.
 	variable q : unsigned(15 downto 0):=(others => '0');  --result.
@@ -43,11 +45,11 @@ architecture sqrt of  squart is
 
 	end function sqrt_real;
 
- 
+ -----------------------------------------------------------------------------------
+	
 	signal leftshifted_unsigned: unsigned(31 downto 0):=(others => '0'); --Putting the left shifted unsigned(32 bit) here
-	signal zero:unsigned(44 downto 0):=(others => '0');
+	signal zero:unsigned(44 downto 0):=(others => '0'); -- Used to reset signals 
 	signal sqrt_output: unsigned(15 downto 0):=(others => '0'); -- Holder for the output of sqrt function 
-	signal count: integer:=0;
 	signal out_flag: std_logic:='0';
 
 begin
@@ -56,28 +58,25 @@ begin
 	if (flag'event and flag = '1') then -- Used for simmulation 
 	output_flag_component <= out_flag;
 		if(data_in/= zero) then
-		leftshifted_unsigned(24 downto 0) <= ( data_in(44 downto 20));	
+		leftshifted_unsigned(24 downto 0) <= ( data_in(44 downto 20));	--Left shifts in order to compinsate for the 20 right shift from 1/334 
 		end if;
 
 		if (leftshifted_unsigned/= zero(31 downto 0)) then
-		sqrt_output <= sqrt_real(leftshifted_unsigned);
-		count<=2;
-		leftshifted_unsigned <= zero(31 downto 0);
+		sqrt_output <= sqrt_real(leftshifted_unsigned); --Calling the square root function here
+		leftshifted_unsigned <= zero(31 downto 0); --Reset 
 		end if; 
 
 		if (sqrt_output /= zero( 15 downto 0)) then 
-		data_out <= sqrt_output(11 downto 0); -- Changing the integer into 12 bit 
-		sqrt_output <= zero(15 downto 0);
-		out_flag <= '1';
+		data_out <= sqrt_output(11 downto 0); -- Shifting the variable to a 12 bit unsigned as the output of rms 
+		sqrt_output <= zero(15 downto 0); --Reset
+		out_flag <= '1'; --Out_flag turns 1 when done
 		end if;
 		
 		if(out_flag = '1') then
-		out_flag <= '0';
+		out_flag <= '0'; -- Reset
 		
 		end if;
 		
-	--else 
-	--null;
 
 	end if;
 

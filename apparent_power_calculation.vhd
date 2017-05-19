@@ -19,12 +19,9 @@ begin
 
 	process(input_flag) --Creating a process so the program will run sequencialy instead of concurrently
 	begin 
-	if (rising_edge(input_flag)) then --This process will trigger when the Irms and Vrms are inputted 
-
-	I_times_V <= in_Vrms*in_Irms; -- Irms*Vrms, because we're turning the bit vectors into integers, we do not need to left shift it 16 bit to make sure 
-					-- the output is a 16 bit value
-	apparent_power <= I_times_V(23 downto 12);
-	
+	if (input_flag'event and input_flag = '1') then --This process will trigger when the Irms and Vrms are inputted 
+	I_times_V <= in_Vrms*in_Irms; 
+	apparent_power <= I_times_V(23 downto 12); -- Because the output is too small, make sure to add 12 zeros after the binary value to see the correct output
 	end if;
 
 	end process;
