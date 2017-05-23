@@ -48,11 +48,6 @@ begin
 		summation <= power ;--First power 
 		counter <=  2;
 
-		--when (336) => 
-		--power <= to_integer(signed(Voltage_in))*to_integer(signed(Current_in)); -- Second power
-		--counter <= counter + 1;
-		--summation <= power; -- first input summation
-		--inside_sqrt <= to_unsigned((summation_334 * multiply),inside_sqrt'length); 
 
 		when others => -- If statement that repeats until the number of samples is reached 
 		power <= to_integer(signed(Voltage_in))*to_integer(signed(Current_in));

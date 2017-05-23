@@ -4,8 +4,8 @@ use ieee.numeric_std.all;
 entity real_power_calc is 
 port( 
 	input_flag: in std_logic; --Using as process trigger 
-	Voltage_in: in std_logic_vector(12 downto 0); -- Voltage input coming from ADC IP
-	Current_in: in std_logic_vector(12 downto 0); -- Current input coming from ADC IP 
+	Voltage_in: in std_logic_vector(11 downto 0); -- Voltage input coming from ADC IP
+	Current_in: in std_logic_vector(11 downto 0); -- Current input coming from ADC IP 
 	Real_power:  out unsigned(11 downto 0); -- Real power coming out of the function NEED TO BE ADJUSTED 13 BITS  (ADD 13 ZEROS AFTER THE VALUE) (In uW) 
 	flag_out: out std_logic --Variables that turns 1 when calculations is done
 	);
